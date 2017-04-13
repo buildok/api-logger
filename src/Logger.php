@@ -11,23 +11,66 @@ use buildok\logger\View;
  */
 class Logger
 {
+	/**
+	 * Stream wrappers
+	 */
 	const WRAPPERS = ['http'];
 
+	/**
+	 * Ignore request static
+	 */
+	const IGNORE = ['ico'];
+
+	/**
+	 * Log buffer
+	 * @var array
+	 */
 	private static $app_log = [];
 
+	/**
+	 * Error logger object
+	 * @var ErrorLogger
+	 */
 	private $errorLogger;
 
+	/**
+	 * DB logger object
+	 * @var SQLiteStorage
+	 */
 	private $log;
+
+	/**
+	 * Show log object
+	 * @var View
+	 */
+	private $view;
+
+	/**
+	 * Flag turn on/off log
+	 * @var boolean
+	 */
 	private $on = true;
 
-	public function __construct($anchor = 'api-logger')
+	/**
+	 * Constructor
+	 * Save income data to log
+	 * or render log view
+	 * @param string $logFile Log filename
+	 * @param string $anchor  URI for log view
+	 */
+	public function __construct($logFile = 'logger.db', $anchor = 'api-logger')
 	{
 		ob_start();
 
-		$this->log = new SQLiteStorage();
+		$this->log = new SQLiteStorage($logFile);
 		$this->view = new View;
 
 		$path = parse_url($_SERVER['REQUEST_URI'], \PHP_URL_PATH);
+		if ($this->isIgnore($path)) {
+			$this->on = false;
+			exit(0);
+		}
+
 		if (stripos($path, $anchor) === false) {
 			$this->registerWrappers();
 			$this->errorLogger = new ErrorLogger();
@@ -44,6 +87,21 @@ class Logger
 		}
 	}
 
+	/**
+	 * Add stream processing data to log
+	 * @param array $stream
+	 */
+	public static function addStream($stream)
+	{
+		foreach ($stream as $item) {
+			self::$app_log[] = $item;
+		}
+	}
+
+	/**
+	 * Destructor
+	 * Save outcome data to log
+	 */
 	public function __destruct()
 	{
 		$out = ob_get_contents();
@@ -75,6 +133,30 @@ class Logger
 		file_put_contents('php://output', $out);
 	}
 
+	/**
+	 * Check request path
+	 * @param  string  $path
+	 * @return boolean
+	 */
+	private function isIgnore($path)
+	{
+		$parts = explode('/', $path);
+		$last_paire = end($parts);
+
+		$pairs = explode('.', $last_paire);
+		if (count($pairs) > 1) {
+			$ext = end($pairs);
+
+			return in_array($ext, self::IGNORE);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns request data
+	 * @return array
+	 */
 	private function getRequest()
 	{
 		$request = [
@@ -98,6 +180,9 @@ class Logger
 		return $request;
 	}
 
+	/**
+	 * Register available stream wrappers
+	 */
 	private function registerWrappers()
 	{
 		foreach (self::WRAPPERS as $type) {
@@ -114,6 +199,10 @@ class Logger
 		}
 	}
 
+	/**
+	 * Returns request headers
+	 * @return array
+	 */
 	private function getRequestHeaders()
 	{
 	    $headers = [];
@@ -125,13 +214,6 @@ class Logger
 	    }
 
 	    return $headers;
-	}
-
-	public static function addStream($stream)
-	{
-		foreach ($stream as $item) {
-			self::$app_log[] = $item;
-		}
 	}
 }
 

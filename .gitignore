@@ -6,3 +6,7 @@
 /some.php
 
 /vendor/
+
+logs/
+
+/App.php

@@ -5,7 +5,8 @@ use buildok\logger\exceptions\LoggerException;
 use buildok\logger\Logger;
 
 /**
- * Wrapper class
+ * StreamWrapper class
+ * @see http://php.net/manual/ru/class.streamwrapper.php
  */
 abstract class StreamWrapper
 {
@@ -26,6 +27,11 @@ abstract class StreamWrapper
 	 */
 	protected $read_content = null;
 	protected $write_content = null;
+
+	/**
+	 * Time of open stream
+	 * @var float
+	 */
 	protected $open_time;
 
 
@@ -97,7 +103,6 @@ abstract class StreamWrapper
 
 		parse_str(parse_url($meta['uri'], \PHP_URL_QUERY), $query_str);
 
-
 		$stream = [
 			'request' => [
 				'time' => $this->open_time,
@@ -126,7 +131,7 @@ abstract class StreamWrapper
 	{
 		$ret = [];
 		foreach ($headers as $key => $header) {
-			list($name, $val) = explode(':', $header, 2);
+			list ($name, $val) = explode(':', $header, 2);
 			$ret[$name] = trim($val);
 		}
 

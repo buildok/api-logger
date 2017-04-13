@@ -7,8 +7,15 @@ namespace buildok\logger;
 */
 class View
 {
+    /**
+     * Path to templates
+     * @var string
+     */
     private $path;
 
+    /**
+     * Initialization
+     */
     public function __construct()
     {
         $this->path = dirname(__FILE__) . '/views/';
@@ -38,7 +45,6 @@ class View
     public function render($params = [], $template = 'show')
     {
         $content = $this->renderPartial($template, $params);
-        // $params = array_merge($params, ['content' => $content]);
 
         echo $this->renderPartial('layout', ['content' => $content]);
     }

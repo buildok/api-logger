@@ -4,24 +4,39 @@ namespace buildok\logger;
 use buildok\logger\Logger;
 
 /**
- *
+ * ErrorLogger class
  */
 class ErrorLogger
 {
+	/**
+	 * Errors buffer
+	 * @var array
+	 */
 	private $errors = [];
 
+	/**
+	 * Init
+	 * Set error and exception handlers
+	 */
 	public function __construct()
 	{
 		set_exception_handler([$this, 'exceptionHandler']);
 		set_error_handler([$this, 'errorHandler']);
 	}
 
+	/**
+	 * Restore default handlers
+	 */
 	public function __destruct()
 	{
 		restore_error_handler();
 		restore_exception_handler();
 	}
 
+	/**
+	 * Exception handler
+	 * @see http://php.net/manual/ru/function.set-exception-handler.php
+	 */
 	public function exceptionHandler($exception)
 	{
 		$traces = [];
@@ -38,10 +53,7 @@ class ErrorLogger
 				'args' => $arguments
 			];
 
-			// !isset($item[''])
-
 			$traces[] = $trace_item;
-
 		}
 
 		$this->errors[] = [
@@ -56,13 +68,8 @@ class ErrorLogger
 	}
 
 	/**
-	 * [errorHandler description]
-	 * @param  int    $errno      [description]
-	 * @param  string $errst      [description]
-	 * @param  string $errfile    [description]
-	 * @param  int    $errline    [description]
-	 * @param  array  $errcontext [description]
-	 * @return bool
+	 * Error handler
+	 * @see http://php.net/manual/ru/function.set-error-handler.php
 	 */
 	public function errorHandler($errno, $errst, $errfile = null, $errline = null, $errcontext = null)
 	{
@@ -92,11 +99,21 @@ class ErrorLogger
 		return true;
 	}
 
+	/**
+	 * Get errors
+	 * @return array
+	 */
 	public function errors()
 	{
 		return $this->errors;
 	}
 
+	/**
+	 * Returns data of variable type
+	 * @param  mixed $value Variable value
+	 * @param  string $name  Variable name
+	 * @return array
+	 */
 	private function explaine($value, $name = null)
 	{
 		$classname = null;
@@ -141,6 +158,11 @@ class ErrorLogger
 		return $item;
 	}
 
+	/**
+	 * Returns error type
+	 * @param  int $code Error code
+	 * @return string
+	 */
 	private function mapErrors($code)
 	{
 	    $type = null;
