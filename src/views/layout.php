@@ -30,8 +30,6 @@ body {
 
 .log-item {
     border: 1px solid #ccc;
-    /*border-top-color: #999;*/
-    /*border-top-width: 3px;*/
     padding: 5px 50px;
     margin-top: 5px;
 }
@@ -53,19 +51,16 @@ body {
 
 .caption {
     text-transform: capitalize;
-    /*position: relative;*/
 }
 
 .caption:after {
     content: ':';
     padding-left: 1px;
-/*    padding-right: 10px;*/
 }
 
 .general .caption {
     display: inline-block;
     min-width: 100px;
-    /* text-align: right; */
 }
 
 .params .item .caption {
@@ -118,16 +113,12 @@ body {
 }
 
 .log-item.error {
-    /* border-left: none; */
-    /* border-right: none; */
-    /*border-top-color: #d64949;*/
     border-top-color: #e64c4c;
     border-top-width: 3px;
     background: #ddd;
 }
 
 .error .item-caption {
-    /*background: #d64949;*/
     background: #e64c4c;
 }
 
@@ -162,7 +153,6 @@ body {
 
 .context {
     margin-top: 10px;
-    /*padding-left: 20px;*/
 }
 
 .variable-data {
@@ -172,15 +162,11 @@ body {
 }
 
 .variable-data .name {
-    /* font-weight: 600; */
     color: #000;
     position: relative;
-    /*display: inline-block;*/
     top: 1px;
-    /* left: 0; */
     float: left;
     cursor: pointer;
-    /* padding-top: 1px; */
 }
 
 .variable-data .name::before {
@@ -199,15 +185,12 @@ body {
 
 .array .variable-data .name::after {
     content: '=>';
-    /* position: absolute; */
     padding-left: 16px;
 }
 
 .variable-data .type {
-    /* font-style: italic; */
     font-size: 10px;
     text-transform: uppercase;
-    /*font-weight: 600;*/
 }
 
 .var-value {
@@ -244,26 +227,18 @@ body {
 
 .object > .var-value::before {
     content: '{';
-    /*display: block;*/
-    /*position: absolute;*/
 }
 
 .object > .var-value::after {
     content: '}';
-    /*display: block;*/
-    /*position: absolute;*/
 }
 
 .array > .var-value::before {
     content: '[';
-    /*display: block;*/
-    /*position: absolute;*/
 }
 
 .array > .var-value::after {
     content: ']';
-    /*display: block;*/
-    /*position: absolute;*/
 }
 
 .class-name {
@@ -504,17 +479,6 @@ body {
 .log-item.error .trace {
     display: none;
 }
-.log-item.error .info .message > .caption {
-    /*display: none;*/
-}
-.log-item.error .info .file,
-.log-item.error .info .line {
-    /*display: none;*/
-}
-
-.log-item.error .error-type {
-    /*line-height: 1px;*/
-}
 
 .log-item.request .general .method > .value {
     position: absolute;
@@ -531,8 +495,6 @@ body {
     left: 105px;
     font-size: 14px;
     color: #fff;
-    /*font-weight: 600;*/
-    /*font-family: 'Roboto', sans-serif;*/
 }
 .log-item .item-date {
     padding-top: 0;
@@ -553,20 +515,6 @@ body {
     color: #fff;
     font-weight: 600;
 }
-.log-item .error-type > span {
-    /*position: relative;
-    top: -17px;
-    left: 5px;
-    color: #fff;*/
-}
-.log-item.error .info .message .value {
-    /*position: relative;
-    top: -28px;
-    color: #fff;
-    font-size: 14px;*/
-}
-
-
 
 .log-item.on.request .item-caption > span,
 .log-item.on.response .item-caption > span {
@@ -587,10 +535,6 @@ body {
 .log-item.on .content-wrapper,
 .log-item.on.error .info .message > .caption {
     display: initial;
-}
-.log-item.on.error .info .file,
-.log-item.on.error .info .line {
-    /*display: block;*/
 }
 .log-item.on.error .context,
 .log-item.on.error .trace {
@@ -614,20 +558,6 @@ body {
     font-size: 12px;
     font-weight: 400;
     color: #000
-}
-.log-item.on .error-type > span {
-    /*position: static;*/
-    /*color: #e64c4c;*/
-    /*font-size: 14px;*/
-    /*font-weight: 600;*/
-}
-.log-item.on.error .error-type {
-    /*line-height: 60px;*/
-}
-.log-item.on.error .info .message .value {
-    /*position: static;*/
-    /*color: #434343;*/
-    /*font-size: 12px;*/
 }
 
 /**************************************************/
@@ -668,15 +598,101 @@ body {
     top: 12px;
 }
 
+/*****************************************************/
+.xml-item {
+    margin-left: 15px;
+    position: relative;
+}
 
+.xml-hdr,
+.xml-item .name {
+    font-family: 'Source Code Pro', monospace;
+    color: #78278a;
+}
+.xml-item .name:after {
+    content: '>';
+}
+.xml-item .name:before {
+    content: '<';
+}
+.xml-item .name.back:before {
+    content: '</';
+}
+
+.xml-item.leaf.empty .name:after {
+    content: '/>';
+}
+.xml-item.leaf.empty .name.back {
+    display: none;
+}
+
+.xml-item > .value {
+    padding-left: 0;
+    display: inline;
+    color: #000;
+}
+
+.xml-item.leaf.empty > .value {
+    color: #999;
+}
+
+.xml-item .name {
+    display: inline-block;
+}
+.xml-item.node > .name:hover {
+    cursor: pointer;
+}
+
+.xml-item.node::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: -8px;
+    border: 3px solid transparent;
+    border-left-color: #434343;
+    border-left-width: 5px;
+}
+.xml-item.node.on::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: -9px;
+    border: 3px solid transparent;
+    border-top-color: #434343;
+    border-top-width: 5px;
+}
+.xml-item.node.on > .value {
+    display: inline;
+}
+.xml-item.node > .value {
+    display: none;
+}
+
+.xml-item.node:after {
+    font-family: 'Source Code Pro', monospace;
+    color: #434343;
+    padding-left: 10px;
+}
+.xml-item.node:after {
+    content: '...';
+}
+
+.xml-item.node.on:after {
+    display: none;
+}
+
+.xml-item.node > .name.back {
+    display: none;
+}
+.xml-item.node.on > .name.back {
+    display: inline-block;
+}
 </style>
 <title>Remote Logger</title>
 </head>
 <body>
 
-	<div class="content">
-		<?= $content ?>
-	</div>
+	<div class="content"><?= $content ?></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -685,9 +701,11 @@ body {
         $('.variable-data.array').on('click', '.name', {}, onSlideV);
 
         $('.json-item.object').on('click', '.name', {parent:'.json-item'}, onSlide);
-        $('.json-item.array').on('click', '.name', {parent:'.json-item'}, onSlide)
+        $('.json-item.array').on('click', '.name', {parent:'.json-item'}, onSlide);
 
-        $('.log-item').on('click', '.item-caption', {parent:'.log-item'}, onSlide)
+        $('.log-item').on('click', '.item-caption', {parent:'.log-item'}, onSlide);
+
+        $('.xml-item.node').on('click', '.name', {parent:'.xml-item'}, onSlide)
     });
 
     function onSlide(e) {
