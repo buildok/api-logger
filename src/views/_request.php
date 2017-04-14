@@ -56,6 +56,7 @@ if ($item->param): ?>
 	foreach($item->headers as $header => $value):
 		if (strcasecmp($header, 'Content-Type') == 0) {
 			list ($c_type) = explode(';', $value);
+			list (, $c_type) = explode('/', $c_type);
 		} ?>
 		<li class="item">
 			<span class="caption"><?= $header; ?></span>
