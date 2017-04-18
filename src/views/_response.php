@@ -34,7 +34,6 @@ if ($item->body): ?>
 		<div class="content-type">
 			<span class="caption">content</span>
 			<span class="value"><?= $c_type; ?></span>
-
 		</div>
 		<div class="content-body">
 			<?= $this->renderPartial('_content', ['type' => $c_type, 'body' => $item->body]); ?>
