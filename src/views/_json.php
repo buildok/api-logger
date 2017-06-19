@@ -5,8 +5,11 @@
  */
 
 
-foreach ($item as $key => $value): ?>
-	<div class="json-item <?= gettype($value) ?>">
+foreach ($item as $key => $value):
+	$type = gettype($value);
+	$v = ($type == 'object') ? (array)$value : $value;
+	$empty = ((bool)$v ? false : 'empty'); ?>
+	<div class="json-item <?= $type ?> <?= $empty ?>">
 		<div class="name"><span><?= $key ?></span></div>
 		<div class="value">
 			<?php

@@ -65,6 +65,8 @@ class ErrorLogger
 			'line' => $exception->getLine(),
 			'trace' => $traces
 		];
+
+		exit(1);
 	}
 
 	/**
@@ -92,11 +94,7 @@ class ErrorLogger
 			'context' => $context
 		];
 
-		if ($type == 'Fatal Error') {
-			exit(1);
-		}
-
-		return true;
+		exit(1);
 	}
 
 	/**

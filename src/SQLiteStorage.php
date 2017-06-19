@@ -39,7 +39,8 @@ class SQLiteStorage
 	 */
 	public function show($startID = 0, $limit = 100)
 	{
-		$stmt = $this->db->prepare('SELECT * FROM stream WHERE id > :startID LIMIT :limit');
+		// $stmt = $this->db->prepare('SELECT * FROM stream WHERE id > :startID LIMIT :limit');
+		$stmt = $this->db->prepare('SELECT * FROM stream WHERE id > :startID');
 		$stmt->bindValue(':startID', $startID, \SQLITE3_INTEGER);
 		$stmt->bindValue(':limit', $limit, \SQLITE3_INTEGER);
 

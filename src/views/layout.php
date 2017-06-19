@@ -291,6 +291,13 @@ body {
     border-top-width: 5px;
 }
 
+.args .variable-data.object::before,
+.args .variable-data.array::before,
+.args .variable-data.object.on::before,
+.args .variable-data.array.on::before {
+    display: none;
+}
+
 .trace .entry {
     margin-left: 15px;
 }
@@ -403,17 +410,15 @@ body {
 .json-item .name {
     display: inline-block;
 }
-.json-item.object > .name,
-.json-item.array > .name {
+
+.json-item.object:not(.empty) > .name:hover,
+.json-item.array:not(.empty) > .name:hover {
+    color: #000;
     cursor: pointer;
 }
-.json-item.object > .name:hover,
-.json-item.array > .name:hover {
-    color: #000;
-}
 
-.json-item.object::before,
-.json-item.array::before {
+.json-item.object:not(.empty)::before,
+.json-item.array:not(.empty)::before {
     content: '';
     position: absolute;
     top: 5px;
@@ -422,6 +427,7 @@ body {
     border-left-color: #434343;
     border-left-width: 5px;
 }
+
 .json-item.object.on::before,
 .json-item.array.on::before {
     content: '';
@@ -432,6 +438,7 @@ body {
     border-top-color: #434343;
     border-top-width: 5px;
 }
+
 .json-item.object.on > .value,
 .json-item.array.on > .value {
     display: inline;
@@ -450,8 +457,14 @@ body {
 .json-item.object:after {
     content: '{...}';
 }
+.json-item.object.empty:after {
+    content: '{} empty';
+}
 .json-item.array:after {
     content: '[...]';
+}
+.json-item.array.empty:after {
+    content: '[] empty';
 }
 
 .json-item.object.on:after,
@@ -697,28 +710,21 @@ body {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.variable-data.object').on('click', '.name', {}, onSlideV);
-        $('.variable-data.array').on('click', '.name', {}, onSlideV);
+        $('.variable-data.object:not(.empty)').on('click', '.name', {parent:'.variable-data'}, onSlide);
+        $('.variable-data.array:not(.empty)').on('click', '.name', {parent:'.variable-data'}, onSlide);
 
-        $('.json-item.object').on('click', '.name', {parent:'.json-item'}, onSlide);
-        $('.json-item.array').on('click', '.name', {parent:'.json-item'}, onSlide);
+        $('.json-item.object:not(.empty)').on('click', '.name', {parent:'.json-item'}, onSlide);
+        $('.json-item.array:not(.empty)').on('click', '.name', {parent:'.json-item'}, onSlide);
 
         $('.log-item').on('click', '.item-caption', {parent:'.log-item'}, onSlide);
 
-        $('.xml-item.node').on('click', '.name', {parent:'.xml-item'}, onSlide)
+        $('.xml-item.node:not(.empty)').on('click', '.name', {parent:'.xml-item'}, onSlide)
     });
 
     function onSlide(e) {
         e.stopPropagation();
 
         var parent = $(this).closest(e.data.parent);
-        parent.toggleClass('on');
-    }
-
-    function onSlideV(e) {
-        e.stopPropagation();
-
-        var parent = $(this).closest('.variable-data');
         parent.toggleClass('on');
     }
 

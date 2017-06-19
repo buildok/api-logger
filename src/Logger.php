@@ -14,7 +14,7 @@ class Logger
 	/**
 	 * Stream wrappers
 	 */
-	const WRAPPERS = ['http'];
+	const WRAPPERS = ['http', 'https'];
 
 	/**
 	 * Ignore request static
@@ -113,19 +113,21 @@ class Logger
 				self::$app_log[] = $error;
 			}
 
-			$parsed_hdr = [];
-			foreach (headers_list() as $key => $header) {
-				list($name, $val) = explode(':', $header, 2);
-				$parsed_hdr[$name] = trim($val);
+			if (!$errors) {
+				$parsed_hdr = [];
+				foreach (headers_list() as $key => $header) {
+					list($name, $val) = explode(':', $header, 2);
+					$parsed_hdr[$name] = trim($val);
+				}
+				$response['headers'] = $parsed_hdr;
+				$response['body'] = $out;
+				$response['direct'] = 'outcome';
+				$response['time'] = microtime(true);
+				$response['code'] = http_response_code();
+				$response['message'] = '';
+				$response['protocol'] = $_SERVER['SERVER_PROTOCOL'];
+				self::$app_log[] = $response;
 			}
-			$response['headers'] = $parsed_hdr;
-			$response['body'] = $out;
-			$response['direct'] = 'outcome';
-			$response['time'] = microtime(true);
-			$response['code'] = http_response_code();
-			$response['message'] = '';
-			$response['protocol'] = $_SERVER['SERVER_PROTOCOL'];
-			self::$app_log[] = $response;
 
 			$this->log->save(self::$app_log);
 		}

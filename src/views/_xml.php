@@ -4,8 +4,16 @@
  * @var $item stdClass Content object
  */
 
+$item->rewind();
+var_dump($item);
+var_dump($item->valid());
+var_dump($item->hasChildren());
+var_dump($item->count());
+var_dump(strval($item->current()));
 
-// var_dump($item);
+// $c = $item->getChildren();
+// var_dump($c);
+
 
 for ($item->rewind(); $item->valid(); $item->next()):
 	$hasChild = $item->hasChildren();
