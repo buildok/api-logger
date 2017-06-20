@@ -41,5 +41,5 @@ foreach ($records as $key => $row):
 				<span class="date-time"><?= $dt->format('H:i:s.u'); ?></span>
 			</div>
 		</div>
-	<?php endif; ?>
-<?php endforeach; ?>
+	<?php endif;
+endforeach;

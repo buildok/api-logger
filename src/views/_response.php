@@ -39,4 +39,4 @@ if ($item->body): ?>
 			<?= $this->renderPartial('_content', ['type' => $c_type, 'body' => $item->body]); ?>
 		</div>
 	</div>
-<?php endif; ?>
+<?php endif;

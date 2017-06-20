@@ -1,39 +1,50 @@
 <?php
 /**
  * @var $this Object of buildok\logger\View
- * @var $item stdClass Content object
+ * @var $values array XML source
  */
 
-$item->rewind();
-var_dump($item);
-var_dump($item->valid());
-var_dump($item->hasChildren());
-var_dump($item->count());
-var_dump(strval($item->current()));
+foreach ($values as $key => $item) {
+	switch ($item['type']) {
+		case 'open':
+			$tag = $item['tag'];
+			if (isset($item['attributes'])) {
+				$attrs = '';
+				foreach ($item['attributes'] as $key => $value) {
+					$attrs .= " $key:$value";
+				}
 
-// $c = $item->getChildren();
-// var_dump($c);
-
-
-for ($item->rewind(); $item->valid(); $item->next()):
-	$hasChild = $item->hasChildren();
-	$empty = (!$hasChild && !strlen(strval($item->current())) ? 'empty' : ''); ?>
-	<div class="xml-item <?= ($hasChild ? 'node ' : 'leaf ') . $empty ?>">
-		<div class="name"><span><?= $item->key() ?></span></div>
-		<div class="value">
+				$tag .= $attrs;
+			}
+			?>
+			<div class="xml-item node">
+				<div class="name"><span><?= $tag ?></span></div>
+					<div class="value">
 			<?php
-			if ($hasChild):
-				echo $this->renderPartial('_xml', ['item' => $item->current()]);
-			else:
-				if ($empty) {
-					$value = $empty;
-				} else {
-					$value = strval($item->current());
-				} ?>
-				<span><?= $value ?></span>
-			<?php endif; ?>
-		</div>
-		<div class="name back"><span><?= $item->key() ?></span></div>
-	</div>
-<?php endfor; ?>
+			break;
+		case 'complete':
+			$tag = $item['tag'];
+			if (isset($item['attributes'])) {
+				$attrs = '';
+				foreach ($item['attributes'] as $key => $value) {
+					$attrs .= " $key:$value";
+				}
 
+				$tag .= $attrs;
+			}
+			$value = isset($item['value']) ? $item['value'] : ''; ?>
+						<div class="xml-item leaf <?= (strlen($value) ? '' : 'empty') ?>">
+							<div class="name"><span><?= $tag ?></span></div>
+							<div class="value"><span><?= $value ?></span></div>
+							<div class="name back"><span><?= $item['tag'] ?></span></div>
+						</div>
+			<?php
+			break;
+		case 'close': ?>
+					</div>
+				<div class="name back"><span><?= $item['tag'] ?></span></div>
+			</div>
+			<?php
+			break;
+	}
+}
