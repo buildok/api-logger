@@ -35,20 +35,6 @@
 	<?php endif; ?>
 </div>
 
-<?php
-if ($item->param): ?>
-	<ul class="list params">
-		<span class="caption"><?= 'parameters'; ?></span>
-		<?php
-		foreach($item->param as $name => $value): ?>
-			<li class="item">
-				<span class="caption"><?= $name; ?></span>
-				<span class="value"><?= $value; ?></span>
-			</li>
-		<?php endforeach; ?>
-	</ul>
-<?php endif; ?>
-
 <ul class="list headers">
 	<span class="caption"><?= 'headers'; ?></span>
 	<?php
@@ -64,6 +50,20 @@ if ($item->param): ?>
 		</li>
 	<?php endforeach; ?>
 </ul>
+
+<?php
+if ($item->param): ?>
+	<ul class="list params">
+		<span class="caption"><?= 'parameters'; ?></span>
+		<?php
+		foreach($item->param as $name => $value): ?>
+			<li class="item">
+				<span class="caption"><?= $name; ?></span>
+				<span class="value"><?= $value; ?></span>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+<?php endif; ?>
 
 <?php
 if ($item->body): ?>

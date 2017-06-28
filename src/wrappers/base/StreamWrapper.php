@@ -88,20 +88,41 @@ abstract class StreamWrapper
 		list($protocol, $code, $message) = explode(' ', $meta['wrapper_data'][0], 3);
 		unset($meta['wrapper_data'][0]);
 
+		// $headers = $this->parseHeaders($params['options']['http']['header']);
+
+		$query_params = [];
 		if (array_key_exists('content', $params['options']['http'])) {
 			$content = $params['options']['http']['content'];
-			if (is_array($content)) {
-				$body = $content;
-			} else {
-				if (!$body = json_decode($params['options']['http']['content'], true)) {
-					parse_str($params['options']['http']['content'], $body);
-				}
-			}
+
+			$body = is_array($content) ? $content : json_decode($params['options']['http']['content'], true);
+			// if (is_array($content)) {
+			// 	$body = $content;
+			// } else {
+			// 	$body = json_decode($params['options']['http']['content'], true);
+			// 	// if (!$body = json_decode($params['options']['http']['content'], true)) {
+			// 	// 	parse_str($params['options']['http']['content'], $query_params);
+			// 	// }
+			// }
 		} else {
 			$body = false;
 		}
 
-		parse_str(parse_url($meta['uri'], \PHP_URL_QUERY), $query_str);
+		switch (strtolower($params['options']['http']['method'])) {
+			case 'get':
+				parse_str(parse_url($meta['uri'], \PHP_URL_QUERY), $query_params);
+				break;
+			case 'post':
+				if (!$body) {
+					parse_str($params['options']['http']['content'], $query_params);
+				}
+				break;
+
+			default:
+				# code...
+				break;
+		}
+
+
 
 		$stream = [
 			'request' => [
@@ -111,7 +132,7 @@ abstract class StreamWrapper
 				'headers' => $this->parseHeaders($params['options']['http']['header']),
 				'uri' => $meta['uri'],
 				'body' => $body,
-				'param' => $query_str,
+				'param' => $query_params,
 			],
 			'response' => [
 				'time' => microtime(true),

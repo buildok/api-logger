@@ -7,7 +7,10 @@
 
 switch (strtolower($type)) {
 	case 'json':
-		echo $this->renderPartial('_json', ['item' => json_decode($body)]);
+		if (is_string($body)) {
+			$body = json_decode($body);
+		}
+		echo $this->renderPartial('_json', ['item' => $body]);
 		break;
 	case 'xml':
 		$values = [];
@@ -18,6 +21,9 @@ switch (strtolower($type)) {
 		xml_parser_free($p);
 
 		echo $this->renderPartial('_xml', ['values' => $values]);
+		break;
+	case 'x-www-form-urlencoded':
+
 		break;
 
 	default:

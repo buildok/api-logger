@@ -13,7 +13,7 @@ foreach ($item as $key => $value):
 		<div class="name"><span><?= $key ?></span></div>
 		<div class="value">
 			<?php
-			if (is_scalar($value)): ?>
+			if (is_scalar($value) || is_null($value)): ?>
 				<span><?= $value ?></span>
 			<?php else:
 				echo $this->renderPartial('_json', ['item' => $value]);
