@@ -27,6 +27,11 @@ class SQLiteStorage
 	 */
 	public function __construct($logFile)
 	{
+		$dir = substr($logFile, 0, strrpos($logFile, '/'));
+		if (!file_exists($dir)) {
+			mkdir($dir, 0777, true);
+		}
+
 		$this->logFile = $logFile;
 		$this->connect();
 	}
