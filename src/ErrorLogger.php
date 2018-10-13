@@ -37,8 +37,12 @@ class ErrorLogger
 	 * Exception handler
 	 * @see http://php.net/manual/ru/function.set-exception-handler.php
 	 */
-	public function exceptionHandler($exception)
+	public function exceptionHandler(\Throwable $exception)
 	{
+		if (is_a($exception, 'ErrorException') || is_a($exception, 'ParseError')) {
+			$this->errorHandler($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine());
+		}
+
 		$traces = [];
 		foreach ($exception->getTrace() as $key => $item) {
 			$arguments = [];
@@ -191,6 +195,7 @@ class ErrorLogger
 	            $type = 'deprecated';
 	            break;
 	        default :
+	        	$type = 'Error Exception';
 	            break;
 	    }
 
