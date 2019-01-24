@@ -46,6 +46,11 @@ abstract class StreamWrapper
 		stream_wrapper_register($this->scheme(), get_class($this));
 	}
 
+	public function getMetadata()
+	{
+		return stream_get_meta_data($this->resource);
+	}
+
 	abstract public function scheme();
 
 	public function __call($name, $arguments)
