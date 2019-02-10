@@ -192,7 +192,7 @@ abstract class StreamWrapper
 	 */
 	protected function stream_cast($cast_as)
 	{
-		return false;
+		return stream_cast($cast_as);
 	}
 
 	/**
